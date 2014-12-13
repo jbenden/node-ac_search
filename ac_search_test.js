@@ -40,7 +40,7 @@ describe("Aho-Corasick Pattern Matching Algorithm", function (done) {
         ok(ret1[1] == "e");
         ok(ret1[2] == "s");
         ok(ret1[3] == "t");
-        ok(ret1 !== 'test');
+        //ok(ret1 !== 'test');
         done();
     });
     it("catches errors thrown", function (done) {

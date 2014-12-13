@@ -1,0 +1,26 @@
+{
+    "author": "Joseph Benden",
+    "name": "ac_search",
+    "description": "AHO-Corasick Search Tree Implementation.",
+    "version": "0.0.1",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/jbenden/node-ac_search.git"
+    },
+    "main": "ac_search.js",
+    "engines": {
+        "node": ">=0.10.0"
+    },
+    "scripts": {
+        "test": "./node_modules/istanbul/lib/cli.js cover --help node_modules/.bin/_mocha -- -- *test.js",
+        "coverage": "./node_modules/grunt-coveralls/node_modules/coveralls/bin/coveralls.js < coverage/lcov.info"
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "grunt": "^0.4.5",
+        "grunt-coveralls": "^1.0.0",
+        "grunt-mocha-test": "^0.12.4",
+        "istanbul": "^0.3.2",
+        "mocha": "^2.0.1"
+    }
+}

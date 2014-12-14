@@ -2,9 +2,7 @@
 #include <v8.h>
 #include <string.h>
 
-extern "C" {
-#include "aho-corasick.h"
-}
+#include "AhoCorasick.h"
 
 using namespace v8;
 using namespace node;
@@ -17,8 +15,8 @@ ToCString(const v8::String::Utf8Value &value) {
 class Ac : public node::ObjectWrap
 {
     public:
-        Ac() {aho_corasick_init(&root);};
-        virtual ~Ac() {aho_corasick_destroy(&root);};
+        Ac() {};
+        virtual ~Ac() {};
 
         static void Init(Handle<Object> target);
 
@@ -28,7 +26,8 @@ class Ac : public node::ObjectWrap
         static Handle<Value> acCompile(const Arguments& args);
         static Handle<Value> acSearch(const Arguments& args);
 
-        aho_corasick_t root;
+        // aho_corasick_t root;
+        AhoCorasick root;
 };
 
 Handle<Value> Ac::acNew(const Arguments& args) {
@@ -76,9 +75,7 @@ Handle<Value> Ac::acAdd(const Arguments &args) {
     const char *aStr = ToCString(str);
     Ac *ac = ObjectWrap::Unwrap<Ac>(args.This());
 
-    int ret = aho_corasick_addstring(&ac->root, (unsigned char *)aStr, strlen(aStr));
-
-    Local<Number> num = Number::New(ret);
+    Local<Number> num = Number::New(ac->root.add(aStr, strlen(aStr)));
 
     return scope.Close(num);
 }
@@ -88,9 +85,7 @@ Handle<Value> Ac::acCompile(const Arguments &args) {
 
     Ac *ac = ObjectWrap::Unwrap<Ac>(args.This());
 
-    int ret = aho_corasick_maketree(&ac->root);
-
-    Local<Number> num = Number::New(ret);
+    Local<Number> num = Number::New(ac->root.compile());
     return scope.Close(num);
 }
 
@@ -108,14 +103,11 @@ Handle<Value> Ac::acSearch(const Arguments &args) {
     const char *aStr = ToCString(str);
     
     int ret;
-    aho_corasick_state_t *state = ac->root.zerostate, *os;
-    size_t s, e;
     Local<v8::String> value;
+    char match[512];
 
-    ret = ahocorasick_KeywordTree_search_helper(state, (unsigned char *)aStr, strlen(aStr), 0, &s, &e, &os);
+    ret = ac->root.search(aStr, strlen(aStr), (char *) match);
     if (ret) {
-        char match[512];
-        strncpy(match, (const char *) &aStr[s], e-s);
         value = v8::String::New(match);
     }
 

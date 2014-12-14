@@ -2,7 +2,7 @@
     "author": "Joseph Benden",
     "name": "ac_search",
     "description": "AHO-Corasick Search Tree Implementation.",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "repository": {
         "type": "git",
         "url": "git://github.com/jbenden/node-ac_search.git"
